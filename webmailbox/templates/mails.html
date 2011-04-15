@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block head %}
+  <style>
+    h4.mail_subject {
+        font-weight: bold;
+    }
+    h4.seen {
+        font-weight: normal;
+    }
+  </style>
+{% end %}
+
+{% block body %}
+  {% if len(mail_accounts) == 1 %}
+    <h3>Mails in {{ mail_accounts[0]['address'] }}</h3>
+    <p>update at {{ mail_accounts[0]['update_at'] }}</p>
+  {% else %}
+    <h3>All mails</h3>
+  {% end %}
+  {% for index, mail in enumerate(mails) %}
+    <h4 class="mail_subject{% if mail['seen'] %} seen{% end %}">{{ index + 1}} <a href="/mailbox/mail/{{ mail['_id'] }}/">{{ mail['subject'] }}</a></h4>
+    <div class="mail_headers">
+      <strong>{{ mail['frm'] }}</strong>
+      {{ mail['date'] }}
+      {% if mail['is_multipart'] %}
+        <img src="{{ static_url('resources/multipart.png') }}" />
+      {% end %}
+    </div>
+    <div class="mail_text">
+      {{ mail['text'] if mail['text'] else mail['html'] }}
+    </div>
+  {% end %}
+  <div class="mails_footer">
+    {% if page > 0 %}
+      <a href="/mailbox/mails/{% if len(mail_accounts) == 1 %}{{ mail_accounts[0]['_id'] }}/{% end %}?p={{ page - 1 }}">Newer</a>
+    {% end %}
+    {% if extra %}
+      <a href="/mailbox/mails/{% if len(mail_accounts) == 1 %}{{ mail_accounts[0]['_id'] }}/{% end %}?p={{ page + 1 }}">Older</a>
+    {% end %}
+  </div>
+  {% if len(mail_accounts) == 1 %}
+    <ul id="mail_account_navi">
+      <li><a href="/mailbox/mails/{{ mail_accounts[0]['_id'] }}/">Inbox</a></li>
+      <li><a>Sent</a></li>
+    </ul>
+  {% else %}
+    <ul id="mail_accounts_list">
+      {% for mail_account in mail_accounts %}
+        <li><a href="/mailbox/mails/{{ mail_account['_id'] }}/">{{ mail_account['address'] }}</a></li>
+      {% end %}
+    </ul>
+  {% end %}
+{% end %}

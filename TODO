@@ -1,0 +1,42 @@
+====
+TODO
+====
+
+
+architecture
+------------
+
+- how to fetch and show latest mails when user visit?
+
+only fetch message headers when user visit,
+and then send to message que for fetch whole message?
+
+or just store mails headers?
+
+- how to show multipart message better?
+
+- how to get new connection after database interruption and reconnection?
+
+building connections pool?
+
+(MongoDB, Redis, ...)
+
+functions
+---------
+
+- better parsing abnormal mail
+- settings
+- inbox
+- reply mail
+- sent_box
+- display mails in/out amount(seen or not)
+- message queue for sending mails
+- others
+- IMAP
+
+UI
+--
+
+- better mail list view
+- better mail view
+- others

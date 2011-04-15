@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <div class="mail_view">
+    <h4>{{ mail['subject'] }}</h4>
+    <div class="mail_headers">
+      <strong>{{ mail['frm'] }}</strong>
+      {{ mail['date'] }}
+      {% if mail['is_multipart'] %}
+        <img src="{{ static_url('resources/multipart.png') }}" />
+      {% end %}
+    </div>
+    <div class="mail_body">
+      {{ mail['html'] if mail['html'] else mail['text'] }}
+    </div>
+    {% if mail['is_multipart'] %}
+      <div class="mail_attachments">
+        {% for attachment in mail['attachments'] %}
+          <a href="/mailbox/attachment/{{ attachment['_id'] }}/">{{ attachment['filename'] }}</a>
+        {% end %}
+      </div>
+    {% end %}
+    <div class="mail_commands">
+      <a href="/mailbox/mail/{{ mail['_id'] }}/export/">Export</a>
+    </div>
+  </div>
+  <ul id="mail_account_navi">
+    <li><a href="/mailbox/mails/{{ mail_account['_id'] }}/">Inbox</a></li>
+    <li><a>Sent</a></li>
+  </ul>
+{% end %}

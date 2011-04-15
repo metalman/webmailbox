@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <table>
+    <tr>
+      <td>address</td>
+      <td>{{ mail_account['address'] }}</td>
+    </tr>
+    <tr>
+      <td>protocol</td>
+      <td>{{ mail_account['protocol'] }}</td>
+    </tr>
+    <tr>
+      <td>nickname</td>
+      <td>{{ mail_account['nickname'] }}</td>
+    </tr>
+    <tr>
+      <td>host</td>
+      <td>{{ mail_account['host'] }}</td>
+    </tr>
+    <tr>
+      <td>port</td>
+      <td>{{ mail_account['port'] }}</td>
+    </tr>
+    <tr>
+      <td>use ssl</td>
+      <td>{{ mail_account['use_ssl'] }}</td>
+    </tr>
+    <tr>
+      <td>auto del</td>
+      <td>{{ mail_account['auto_del'] }}</td>
+    </tr>
+    <tr>
+      <td>update at</td>
+      <td>{{ mail_account['update_at'] }}</td>
+    </tr>
+  </table>
+{% end %}

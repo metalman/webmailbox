@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <ul id="mail_accounts">
+    <li><a href="/mailbox/mail_accounts/add/">Add mail account</a></li>
+    {% for mail_account in mail_accounts %}
+      <li><a href="/mailbox/mail_account/{{ mail_account['_id'] }}/">{{ mail_account['address'] }}/</a></li>
+    {% end %}
+  </ul>
+{% end %}

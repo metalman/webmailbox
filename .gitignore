@@ -1,0 +1,14 @@
+*~
+*#*
+.DS*
+*.cm
+*.class
+*.pyc
+*.pyd
+build/
+dist/
+*.egg-info/
+*.so
+*.swp
+var/
+.installed.cfg

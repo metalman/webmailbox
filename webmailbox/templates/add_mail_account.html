@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <form action="." method="POST" enctype="multipart/form-data">
+    <table>
+      <tr>
+        <td>address</td>
+        <td><input type="text" name="address" /> *</td>
+      </tr>
+      <tr>
+        <td>password</td>
+        <td><input type="password" name="password" /> *</td>
+      </tr>
+      <tr>
+        <td>protocol</td>
+        <td><input type="text" name="protocol" value="pop3" readonly="true" /> *</td>
+      </tr>
+      <tr>
+        <td>nickname</td>
+        <td><input type="text" name="nickname" /></td>
+      </tr>
+      <tr>
+        <td>host</td>
+        <td><input type="text" name="host" /></td>
+      </tr>
+      <tr>
+        <td>port</td>
+        <td><input type="text" name="port" /></td>
+      </tr>
+      <tr>
+        <td>use ssl</td>
+        <td><input type="checkbox" name="use_ssl" /></td>
+      </tr>
+      <tr>
+        <td>auto del</td>
+        <td><input type="checkbox" name="auto_del" readonly="true" /></td>
+      </tr>
+    </table>
+    <p><input type="submit" value="Submit"></p>
+    {{ xsrf_form_html() }}
+  </form>
+{% end %}

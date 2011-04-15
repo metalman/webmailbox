@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block body %}
+  <ul id="home_tabs">
+    <li><a href="/mailbox/mails/">All mail</a></li>
+    {% for mail_account in mail_accounts %}
+      <li><a href="/mailbox/mails/{{ mail_account['_id'] }}/">{{ mail_account['address'] }}/</a></li>
+    {% end %}
+  </ul>
+{% end %}

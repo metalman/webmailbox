@@ -17,10 +17,10 @@ def _get_objectids(oids):
 
 class FSConnection(BaseConnection):
 
-    def __init__(self, host, port, dbname, *argv, **kwargs):
-        super(FSConnection, self).__init__(host, port, *argv, **kwargs)
+    def __init__(self, host, port, database, *args, **kwargs):
+        super(FSConnection, self).__init__(host, port, *args, **kwargs)
         if self._conn is not None:
-            self.db = self._conn[dbname]
+            self.db = self._conn[database]
             self.fs = gridfs.GridFS(self.db)
             if 'username' in kwargs and 'password' in kwargs:
                 if not self.db.authenticate(kwargs['username'], kwargs['password']):

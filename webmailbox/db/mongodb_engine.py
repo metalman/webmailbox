@@ -3,7 +3,6 @@ import random
 import hashlib
 import logging
 import pymongo
-import gridfs
 from pymongo.objectid import ObjectId
 
 '''
@@ -31,9 +30,9 @@ db.mails <- mail
     frm                 string
     to                  string
     subject             string
-    date                timestamp
+    dat                 timestamp
     is_multipart        bool
-    text                string
+    txt                 string
     html                string
     fs_id               ObjectId(GFS)
     attachment_ids      list(GFS ObjectId element)
@@ -61,7 +60,7 @@ def _encrypt_password(password, salt):
     return hashlib.sha1(string_to_hash).hexdigest()
 
 class BaseConnection(object):
-    def __init__(self, host='localhost', port=27017, *argv, **kwargs):
+    def __init__(self, host='localhost', port=27017, *args, **kwargs):
         self.host = host
         self.port = port
         self._conn = None
@@ -82,10 +81,10 @@ class BaseConnection(object):
 
 class DBConnection(BaseConnection):
 
-    def __init__(self, host, port, dbname, *argv, **kwargs):
-        super(DBConnection, self).__init__(host, port, *argv, **kwargs)
+    def __init__(self, host, port, database, *args, **kwargs):
+        super(DBConnection, self).__init__(host, port, *args, **kwargs)
         if self._conn is not None:
-            self.db = self._conn[dbname]
+            self.db = self._conn[database]
             if 'username' in kwargs and 'password' in kwargs:
                 if not self.db.authenticate(kwargs['username'], kwargs['password']):
                     logging.warning('Login failed...')
@@ -180,7 +179,7 @@ class DBConnection(BaseConnection):
             query.update({'mail_account_id': {'$in': mail_account_ids}})
         if query:
             mails = self.db.mails.find(query,
-                                       sort=[('date', pymongo.DESCENDING)],
+                                       sort=[('dat', pymongo.DESCENDING)],
                                        skip=skip, limit=limit+1)
             mails = list(mails)
             if len(mails) > limit:
@@ -192,7 +191,7 @@ class DBConnection(BaseConnection):
 
     def save_mail(self, mail):
         attributes = ('mail_account_id', 'uniqueid', 'frm', 'to', 'subject',
-                      'date', 'is_multipart', 'text', "html", 'fs_id',
+                      'dat', 'is_multipart', 'txt', "html", 'fs_id',
                       'attachment_ids', 'folder')
         for attr in attributes:
             if attr not in mail:
@@ -229,4 +228,5 @@ class DBConnection(BaseConnection):
         ])
         self.db.mails.ensure_index([
             ('mail_account_id', pymongo.ASCENDING)
+            ('dat', pymongo.DESCENDING)
         ])

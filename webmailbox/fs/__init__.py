@@ -6,7 +6,7 @@ def get_fs(settings):
         kwargs = {
             'host': settings.FS_HOST,
             'port': settings.FS_PORT,
-            'dbname': settings.FS_NAME,
+            'database': settings.FS_NAME,
         }
         username = settings.FS_USERNAME
         password = settings.FS_PASSWORD

@@ -8,7 +8,7 @@ import tornado.escape
 from webmailbox.constants import SUPPORTED_MAIL_PROTOCOLS
 from webmailbox.validates import validate_username, validate_password, \
     validate_email
-from webmailbox.core import get_authenticated_pop3
+from webmailbox.protocols.pop3 import get_authenticated_pop3
 
 __all__ = ["urls_mapping"]
 
@@ -118,15 +118,19 @@ class AddMailAccountHandler(BaseHandler):
         if self.db.get_mail_account(address=address):
             raise tornado.web.HTTPError(409, "address already exists")
 
-        # Attempting authenticate to check if address belongs to user
+        # Attempting authenticate to check if user is authenticated
         username, domain = address.split("@", 1)
         host = host if host else domain
         conn_params = [host, port] if port else [host]
-        p = get_authenticated_pop3(conn_params, use_ssl, username, password)
-        if p:
-            p.quit()    # authentication successful
-        else:
-            raise tornado.web.HTTPError(404, "login to server failed.")
+        if protocol == 'pop3':
+            p = get_authenticated_pop3(conn_params, use_ssl, username, password)
+            if p:
+                p.quit()    # authentication successful
+            else:
+                raise tornado.web.HTTPError(404, "login to server failed.")
+        # other protocols
+        #else:
+        #    pass
 
         mail_account = {
             "user_id": self.current_user["_id"],
@@ -177,9 +181,11 @@ class MailListHandler(BaseHandler):
         page = self.get_argument("p", "0")
         if not page.isdigit():
             raise tornado.web.HTTPError(400, "page must be integer.")
+
         page = int(page)
         batch_size = self.settings['batch_size']
         skip = page * batch_size
+
         if mail_account_id is None:
             mail_account = None
             # query user all mails
@@ -195,14 +201,15 @@ class MailListHandler(BaseHandler):
             if mail_account["user_id"] != self.current_user["_id"]:
                 raise tornado.web.HTTPError(403, "Not permit.")
             mail_account_ids = [mail_account_id]
-        mails, extra = self.db.get_mails(mail_account_ids=mail_account_ids,
-                                         skip=skip, limit=batch_size)
 
         if not page:
-            # create messages to message queue for fetch mails
+            # create messages to message queue for fetching mails
             channel = 'mail_accounts:fetch_mails'
             for mail_account_id in mail_account_ids:
                 self.mq.send_message(channel, str(mail_account_id))
+
+        mails, extra = self.db.get_mails(mail_account_ids=mail_account_ids,
+                                         skip=skip, limit=batch_size)
 
         self.render("mails.html", mail_accounts=mail_accounts, mails=mails,
                     extra=extra, page=page)

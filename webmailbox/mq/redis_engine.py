@@ -7,9 +7,9 @@ __all__ = [
 class MQConnection(object):
 
     def __init__(self, host='localhost', port=6379, password=None,
-                 dbname=None, **kwargs):
-        if dbname:
-            kwargs['db'] = dbname
+                 database=None, **kwargs):
+        if database:
+            kwargs['db'] = database
         self.db = redis.Redis(host, port, password=password, **kwargs)
 
     def send_message(self, channel, message):

@@ -6,7 +6,7 @@ def get_db(settings):
         kwargs = {
             'host': settings.DB_HOST,
             'port': settings.DB_PORT,
-            'dbname': settings.DB_NAME,
+            'database': settings.DB_NAME,
         }
         username = settings.DB_USERNAME
         password = settings.DB_PASSWORD

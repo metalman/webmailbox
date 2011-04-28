@@ -13,6 +13,9 @@ and then send to message que for fetch whole message?
 
 or just store mails headers?
 
+maybe we can add an cyclic AJAX in every page
+to create message for fetching mails.
+
 - how to show multipart message better?
 
 - how to get new connection after database interruption and reconnection?
@@ -20,6 +23,12 @@ or just store mails headers?
 building connections pool?
 
 (MongoDB, Redis, ...)
+
+- to prevent overly fetching, need to enhance message queue
+
+save the last fetched message,
+and check time interval between fetching message and fetched message.
+if time interval < FETCH_TIME_INTERVAL, than pass.
 
 functions
 ---------

@@ -4,14 +4,15 @@
   <div class="mail_view">
     <h4>{{ mail['subject'] }}</h4>
     <div class="mail_headers">
-      <strong>{{ mail['frm'] }}</strong>
-      {{ mail['date'] }}
+      From: <strong>{{ mail['frm'] }}</strong><br />
+      To: <strong>{{ mail['to'] }}</strong><br />
+      Date: {{ mail['dat'] }}<br />
       {% if mail['is_multipart'] %}
         <img src="{{ static_url('resources/multipart.png') }}" />
       {% end %}
     </div>
     <div class="mail_body">
-      {{ mail['html'] if mail['html'] else mail['text'] }}
+      {{ mail['html'] if mail['html'] else mail['txt'] }}
     </div>
     {% if mail['is_multipart'] %}
       <div class="mail_attachments">

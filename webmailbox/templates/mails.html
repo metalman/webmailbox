@@ -22,13 +22,13 @@
     <h4 class="mail_subject{% if mail['seen'] %} seen{% end %}">{{ index + 1}} <a href="/mailbox/mail/{{ mail['_id'] }}/">{{ mail['subject'] }}</a></h4>
     <div class="mail_headers">
       <strong>{{ mail['frm'] }}</strong>
-      {{ mail['date'] }}
+      {{ mail['dat'] }}
       {% if mail['is_multipart'] %}
         <img src="{{ static_url('resources/multipart.png') }}" />
       {% end %}
     </div>
     <div class="mail_text">
-      {{ mail['text'] if mail['text'] else mail['html'] }}
+      {{ mail['txt'] if mail['txt'] else mail['html'] }}
     </div>
   {% end %}
   <div class="mails_footer">
